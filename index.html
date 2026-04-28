@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Victor Bermudes — Inspiration Board v0.2</title>
+  <style>
+    /* v0.2 — first treatment.
+       Vic's read: scale + orange + drop face + diagonal + looming but minimal.
+       Every value below is a DIAL, not a decision. We turn them together. */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --jump:  #ff5722;   /* the orange — placeholder, dial with Vic   */
+      --drop:  #0a0a0a;   /* drop-face shadow color                    */
+      --bg:    #faf7f2;   /* page surface — warm off-white, dialed     */
+      --ink:   #1a1a1a;   /* primary text                              */
+      --quiet: #999;      /* secondary text, labels                    */
+      --tilt:  -3deg;     /* diagonal — dial up for more lean          */
+    }
+
+    body {
+      font-family: -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: clamp(2em, 5vw, 5em) clamp(1.2em, 6vw, 6em);
+      overflow-x: hidden;     /* the name's diagonal can otherwise spill */
+    }
+
+    /* ===== NAME — the JUMP ===== */
+    .name-block {
+      margin: 3em 0 7em;
+      max-width: 95%;
+    }
+
+    .name {
+      font-family: "Helvetica Neue", "Arial Black", Helvetica, sans-serif;
+      font-weight: 900;
+      font-size: clamp(4em, 13vw, 11em);
+      letter-spacing: -0.04em;
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--jump);
+      display: inline-block;
+      font-style: italic;
+      transform: rotate(var(--tilt));
+      transform-origin: left bottom;
+      /* drop face — chromatic 3D extrusion */
+      text-shadow:
+         2px  2px 0 var(--drop),
+         4px  4px 0 var(--drop),
+         6px  6px 0 var(--drop),
+         8px  8px 0 var(--drop),
+        10px 10px 0 var(--drop);
+    }
+
+    .meta {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-top: 4em;
+    }
+
+    /* ===== BOARD — quiet by design ===== */
+    #board {
+      margin-top: 6em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 3em;
+    }
+
+    .board-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-bottom: 2em;
+    }
+
+    .placeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1em;
+    }
+
+    .image-placeholder {
+      background: #ececea;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b5b3ac;
+      font-size: 0.75em;
+      font-family: ui-monospace, monospace;
+      letter-spacing: 0.1em;
+    }
+
+    /* ===== PHOTO GRID — contact-sheet mode ===== */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.5em;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      background: #ececea;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .photo-grid img:hover {
+      opacity: 0.92;
+      transform: scale(1.03);
+      z-index: 1;
+      position: relative;
+    }
+
+    /* ===== VIDEO BOARD — same quiet register as image board ===== */
+    #video-board {
+      margin-top: 6em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 3em;
+    }
+
+    .video-board-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-bottom: 2em;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 1.8em 1.5em;
+    }
+
+    .video-item { margin: 0; }
+
+    /* Responsive iframe wrapper —
+       holds 16:9 aspect ratio while flexing to container width.
+       The iframe inside fills the wrapper. */
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .video-frame.aspect-21-9 { aspect-ratio: 21 / 9; }
+
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-caption {
+      font-family: ui-monospace, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-top: 0.7em;
+    }
+
+    /* ===== INTRO — secondary read, deliberately quiet ===== */
+    #intro {
+      max-width: 42em;
+      margin: 0 0 5em;
+    }
+
+    .manifesto {
+      font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      font-size: clamp(1.1em, 1.8vw, 1.4em);
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 1.4em;
+    }
+    .manifesto:last-child { margin-bottom: 0; }
+
+    .manifesto.placeholder {
+      color: #b5b3ac;
+      font-style: italic;
+    }
+
+    /* ===== FOOTER — closing gesture, layered descent in weight ===== */
+    footer {
+      margin-top: 8em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 4em;
+      padding-bottom: 2em;
+    }
+
+    .manifesto-echo {
+      font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      font-size: clamp(1.15em, 2vw, 1.5em);
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--ink);
+      margin: 0 0 4em;
+      max-width: 38em;
+    }
+
+    .footer-cluster {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+      gap: 2em 4em;
+      margin-bottom: 4em;
+    }
+
+    .footer-block h3 {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin: 0 0 0.9em;
+      font-weight: 600;
+    }
+
+    .footer-block ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-block li {
+      margin-bottom: 0.45em;
+    }
+
+    .footer-block a {
+      font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      font-size: 1em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid #ccc;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .footer-block a:hover {
+      color: var(--jump);
+      border-bottom-color: var(--jump);
+    }
+
+    .signature {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.15em;
+      color: var(--quiet);
+      border-top: 1px solid #ececea;
+      padding-top: 1.5em;
+      margin-top: 2em;
+    }
+
+    /* ===== MOBILE — narrow-screen tweaks ===== */
+    @media (max-width: 720px) {
+      .name-block { margin-top: 1em; margin-bottom: 4em; }
+
+      .photo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+        gap: 0.35em;
+      }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2em;
+      }
+
+      .footer-cluster {
+        grid-template-columns: 1fr;
+        gap: 1.8em;
+      }
+
+      #board, #video-board, footer {
+        margin-top: 4em;
+      }
+
+      footer { padding-top: 3em; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="name-block">
+    <h1 class="name">Victor<br>Bermudes</h1>
+    <div class="meta">Inspiration Board · v0.2 · April 2026</div>
+  </header>
+  <section id="intro">
+    <p class="manifesto">The Process is Iterative; we are scientific about artistic experimentation.</p>
+    <p class="manifesto">Leaning In: It&rsquo;s not that serious, but we take every part of it seriously.</p>
+    <p class="manifesto">We aim between the lines.</p>
+  </section>
+
+  <section id="board">
+    <div class="board-label">Some shots that have been pulling me</div>
+    <div class="photo-grid">
+      <img src="images/IMG_4822.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6079.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6114.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6115.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6117_SnapseedCopy.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6124.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6137.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6138.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6157.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6421.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6552.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6556.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6808.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6846.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6857.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6861.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6978.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_6987.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7233.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7257.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7293.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7319.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7320.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7339.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7343.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7344.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7362.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7388.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7397.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7400.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7405.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7409.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7412.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7413.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7415.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7424.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7426.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7443.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7449.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7463.jpeg" alt="" loading="lazy">
+      <img src="images/IMG_7498.jpeg" alt="" loading="lazy">
+    </div>
+  </section>
+
+  <section id="video-board">
+    <div class="video-board-label">Some short films of mine</div>
+    <div class="video-grid">
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title="vimeo-player"
+            src="https://player.vimeo.com/video/585070097?h=40fc0dffbe"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title='"How Long Have We Been Friends?" — Experimental Documentary'
+            src="https://player.vimeo.com/video/388633748?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <figcaption class="video-caption">How Long Have We Been Friends?</figcaption>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame aspect-21-9">
+          <iframe title="Healdsburg, CA"
+            src="https://player.vimeo.com/video/249226131?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <figcaption class="video-caption">Healdsburg, CA</figcaption>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title="YouTube video player"
+            src="https://www.youtube.com/embed/VA8KqojWsKE?si=OQ0YwDczOZtPxIBv"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title="YouTube video player"
+            src="https://www.youtube.com/embed/AR6WNF-Y4R4?si=TzZ5buHMUV5q7SFt"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <footer>
+    <p class="manifesto-echo">We aim between the lines.</p>
+
+    <div class="footer-cluster">
+      <div class="footer-block">
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:vicbermudes@gmail.com">vicbermudes@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-block">
+        <h3>Find more</h3>
+        <ul>
+          <li><a href="https://vimeo.com/victordbermudes" target="_blank" rel="noopener">Vimeo</a></li>
+          <li><a href="https://www.youtube.com/@Watupwitthat1234567" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://substack.com/@vicdb" target="_blank" rel="noopener">Substack</a></li>
+          <li><a href="https://www.instagram.com/victor.d.b/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://github.com/vicbermudes" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/victor-demarco-bermudes/" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="signature">Made by Victor Bermudes · April 2026 · v0.2</p>
+  </footer>
+
+</body>
+</html>
