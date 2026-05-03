@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Victor Bermudes — Inspiration Board v0.4 (merge draft)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!--
+    MERGE DRAFT v0.4 — single condensed file.
+    Pulls from: live v0.2 (github), local v0.3 (index.html), compare-below-name.html (Variant A locked).
+    Every fork below is a placeholder default with HTML comment markers. See MERGE_FORKS.md.
+    LOCKED: bg #faf7f2, name treatment, manifestos (3 lines), photo grid (41 imgs),
+            sticky style (Variant A from compare-below-name.html), notebook fragment,
+            footer cluster + signature.
+    Photos live in ../images 1.0/ (the v0.2 set, 41 imgs) and ../images 2.0/ (newer batch).
+    This file lives in /Tooling Space/, so paths are relative to that.
+  -->
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --jump:  #ff5722;          /* LOCKED — orange */
+      --drop:  #0a0a0a;          /* LOCKED — drop-face */
+      --bg:    #faf7f2;          /* LOCKED — warm off-white */
+      --ink:   #1a1a1a;
+      --quiet: #999;
+      --tilt:  -3deg;            /* LOCKED — diagonal */
+
+      --sticky-yellow: #fff3a0;
+      --sticky-pink:   #ffb3c1;
+      --sticky-mint:   #c8e6c9;
+      --paper-rule:    #b9d3e8;
+      --paper-margin:  #e8556e;
+      --paper-cream:   #f9f4dd;
+    }
+
+    body {
+      font-family: -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: clamp(2em, 5vw, 5em) clamp(1.2em, 6vw, 6em);
+      overflow-x: hidden;
+    }
+
+    /* ===== NAME — LOCKED. Same DNA as v0.2 / v0.3. ===== */
+    .name-block { margin: 3em 0 4em; max-width: 95%; }
+    .name {
+      font-family: "Helvetica Neue", "Arial Black", Helvetica, sans-serif;
+      font-weight: 900;
+      font-size: clamp(4em, 13vw, 11em);
+      letter-spacing: -0.04em;
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--jump);
+      display: inline-block;
+      font-style: italic;
+      transform: rotate(var(--tilt));
+      transform-origin: left bottom;
+      text-shadow:
+         2px  2px 0 var(--drop),
+         4px  4px 0 var(--drop),
+         6px  6px 0 var(--drop),
+         8px  8px 0 var(--drop),
+        10px 10px 0 var(--drop);
+    }
+    .meta {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-top: 1.4em;
+    }
+
+    .bio {
+      font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      font-size: clamp(1em, 1.25vw, 1.15em);
+      line-height: 1.55;
+      color: var(--ink);
+      max-width: 32em;
+      margin-top: 1.6em;
+    }
+
+    /* ===== STICKIES — LOCKED Variant A register ===== */
+    .sticky {
+      position: relative;
+      background: var(--sticky-yellow);
+      padding: 1.2em 1.3em 1.4em;
+      box-shadow:
+        0 1px 1px rgba(0,0,0,0.06),
+        0 6px 14px rgba(0,0,0,0.10);
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.78em;
+      line-height: 1.7;
+      color: #2a2614;
+      letter-spacing: 0.05em;
+    }
+    .sticky h4 {
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #6b5c2e;
+      font-weight: 700;
+      margin-bottom: 0.6em;
+    }
+    .sticky a { color: #2a2614; text-decoration: none; border-bottom: 1px solid rgba(42,38,20,0.3); }
+    .sticky a:hover { color: var(--jump); border-bottom-color: var(--jump); }
+    .sticky ul { list-style: none; padding: 0; margin: 0; }
+    .sticky li { margin-bottom: 0.15em; }
+    .sticky.pink { background: var(--sticky-pink); color: #4a1d2a; }
+    .sticky.pink h4 { color: #6b2942; }
+    .sticky.pink a { color: #4a1d2a; border-bottom-color: rgba(74,29,42,0.3); }
+    .sticky.mint { background: var(--sticky-mint); color: #1f3a23; }
+    .sticky.mint h4 { color: #2e5236; }
+    .sticky.mint a { color: #1f3a23; border-bottom-color: rgba(31,58,35,0.3); }
+
+    .tack {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      top: -6px; left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle at 30% 30%, #ff8a8a 0%, #c41e1e 50%, #7a1010 100%);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.4), inset -1px -1px 2px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+    .tack.silver { background: radial-gradient(circle at 30% 30%, #f0f0f0 0%, #999 60%, #555 100%); }
+
+    /* sticky cluster pinned beside the name (kept Menu sticky per Vic) */
+    .header-stickies {
+      position: relative;
+      min-height: 1px;
+      margin-top: -1em;
+      margin-bottom: 4em;
+      pointer-events: none;
+    }
+    .header-stickies > * { pointer-events: auto; }
+    .header-stickies .s-menu {
+      position: absolute;
+      right: 2em;
+      top: -1em;
+      width: 12em;
+      transform: rotate(-3deg);
+    }
+
+    /* ===== POLAROID (FORK — see comment) ===== */
+    .polaroid {
+      position: relative;
+      background: #fdfbf6;
+      padding: 0.9em 0.9em 2.8em;
+      box-shadow:
+        0 1px 1px rgba(0,0,0,0.08),
+        0 8px 22px rgba(0,0,0,0.18),
+        0 22px 40px rgba(0,0,0,0.10);
+      transform: rotate(2deg);
+      width: min(100%, 22em);
+    }
+    .polaroid img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      background: #ddd;
+    }
+    .polaroid-leaf {
+      position: absolute;
+      top: -1.4em; right: 0.4em;
+      width: 4.5em; height: 6em;
+      pointer-events: none;
+      z-index: 2;
+      transform: rotate(18deg);
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+    }
+
+    /* ===== INTRO — quiet manifestos under the hero ===== */
+    #intro {
+      max-width: 42em;
+      margin: 2em 0 6em;
+    }
+    .manifesto {
+      font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      font-size: clamp(1.1em, 1.8vw, 1.4em);
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 1.4em;
+    }
+    .manifesto:last-child { margin-bottom: 0; }
+
+    /* ===== NOTEBOOK FRAGMENT — LOCKED ===== */
+    .notebook {
+      position: relative;
+      background-color: var(--paper-cream);
+      padding: 1.4em 1.1em 1.2em 2.2em;
+      font-family: "Caveat", "Bradley Hand", cursive;
+      font-size: 1.1em;
+      line-height: 1.45em;
+      color: #1d2742;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent calc(1.45em - 1px),
+          var(--paper-rule) calc(1.45em - 1px),
+          var(--paper-rule) 1.45em
+        ),
+        linear-gradient(to right, transparent 0, transparent 1.7em, var(--paper-margin) 1.7em, var(--paper-margin) calc(1.7em + 1.5px), transparent calc(1.7em + 1.5px));
+      box-shadow:
+        1px 1px 0 rgba(0,0,0,0.10),
+        2px 2px 0 rgba(0,0,0,0.07),
+        0 8px 14px rgba(0,0,0,0.15);
+      clip-path: polygon(
+        0 8%, 6% 0%, 12% 8%, 18% 2%, 24% 8%, 30% 0%, 36% 6%, 42% 0%, 48% 8%, 54% 2%, 60% 8%, 66% 0%, 72% 6%, 78% 0%, 84% 8%, 90% 2%, 96% 8%, 100% 0%,
+        100% 100%, 0 100%
+      );
+    }
+    .notebook .nb-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.55em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.45);
+      margin-bottom: 0.4em;
+      line-height: 1;
+    }
+    .notebook p { margin: 0; }
+    .notebook em { font-style: italic; }
+
+    .nb-float { width: 14em; }
+    .nb-float-right { float: right; margin: 0 0 1.5em 2em; transform: rotate(2deg); }
+    .nb-float-left  { float: left;  margin: 0 2em 1.5em 0; transform: rotate(-2deg); }
+
+    /* ===== PHOTO GRID — LOCKED, contact-sheet ===== */
+    #board {
+      margin-top: 6em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 3em;
+    }
+    .board-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-bottom: 2em;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.5em;
+    }
+    .photo-grid img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      background: #ececea;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .photo-grid img:hover {
+      opacity: 0.92;
+      transform: scale(1.03);
+      z-index: 1;
+      position: relative;
+    }
+
+    /* ===== VIDEO BOARD ===== */
+    #video-board {
+      margin-top: 6em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 3em;
+    }
+    .video-board-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-bottom: 2em;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 1.8em 1.5em;
+    }
+    .video-item { margin: 0; }
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+    .video-frame.aspect-21-9 { aspect-ratio: 21 / 9; }
+    .video-frame iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+    .video-caption {
+      font-family: ui-monospace, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-top: 0.7em;
+    }
+
+    /* ===== FOOTER — LOCKED ===== */
+    footer {
+      margin-top: 8em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 4em;
+      padding-bottom: 2em;
+    }
+    .manifesto-echo {
+      font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      font-size: clamp(1.15em, 2vw, 1.5em);
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--ink);
+      margin: 0 0 4em;
+      max-width: 38em;
+    }
+    .footer-cluster {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+      gap: 2em 4em;
+      margin-bottom: 4em;
+    }
+    .footer-block h3 {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin: 0 0 0.9em;
+      font-weight: 600;
+    }
+    .footer-block ul { list-style: none; padding: 0; margin: 0; }
+    .footer-block li { margin-bottom: 0.45em; }
+    .footer-block a {
+      font-family: Georgia, serif;
+      font-size: 1em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid #ccc;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .footer-block a:hover { color: var(--jump); border-bottom-color: var(--jump); }
+    .signature {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.15em;
+      color: var(--quiet);
+      border-top: 1px solid #ececea;
+      padding-top: 1.5em;
+      margin-top: 2em;
+    }
+
+    @media (max-width: 720px) {
+      .name-block { margin-top: 1em; margin-bottom: 4em; }
+      .header-stickies { margin-top: 1em; margin-bottom: 2.5em; min-height: 0; display: flex; flex-wrap: wrap; gap: 1em; }
+      .header-stickies .s-menu { position: static; width: auto; max-width: 16em; }
+      .nb-float-right, .nb-float-left { float: none; margin: 0 auto 2em; display: block; width: min(20em, 90%); }
+      .photo-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 0.35em; }
+      .video-grid { grid-template-columns: 1fr; gap: 1.2em; }
+      .footer-cluster { grid-template-columns: 1fr; gap: 1.8em; }
+      #board, #video-board, footer { margin-top: 4em; }
+      footer { padding-top: 3em; }
+      .polaroid { width: min(100%, 18em); }
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    FORK 1 — HERO LAYOUT: simple stacked (live v0.2) vs. 2x2 grid (local v0.3).
+    Currently: simple stacked (live-v0.2 read), with the Menu sticky pinned beside the name.
+    Alternatives:
+      A) STACKED (current): name → meta → Menu sticky pinned right → manifestos as quiet block below.
+      B) 2x2 GRID (v0.3): name+bio | polaroid // Menu+manifesto card | CRT TV. Denser.
+    Reasoning behind default: Vic said "I like the github version much better right now" —
+    that's the simple stacked read. Easier to add stickies/notebook fragments over time on top of it.
+  -->
+  <header class="name-block">
+    <h1 class="name">Victor<br>Bermudes</h1>
+    <div class="meta">Inspiration Board · v0.4 · May 2026</div>
+
+    <!--
+      FORK 2 — BIO PARAGRAPH: keep or cut?
+      Currently: KEPT (placeholder default). Lifted from local v0.3.
+      Alternatives:
+        A) KEEP — gives a stranger a one-paragraph "who is this" hook before the work.
+        B) CUT — live v0.2 has none; Vic prefers the simpler read; the work itself is the bio.
+      Comment out the <p class="bio"> below to test "cut".
+    -->
+    <p class="bio">I have recent experience in hospitality and customer service with a background in Documentary and Narrative Filmmaking — BA, SFSU 2020. Actor, writer, bartender, and orator. I pride myself on adaptability, collaboration, and learning. I'm looking for a new project and an engaged team of people to join.</p>
+  </header>
+
+  <!--
+    FORK 3 — MENU STICKY POSITION: pinned beside name (local v0.3) vs. inline below name (Variant A).
+    Currently: pinned-right cluster with just the Menu sticky (Vic asked to keep Menu).
+    Alternatives:
+      A) PINNED-RIGHT (current) — floating above the manifestos, light "paper object" feel.
+      B) NOT PINNED — sticky lives in flow of the page; less floating chrome.
+    The "Now" sticky from Variant A is intentionally OMITTED here so we can see the page breathe;
+    it can be added back as one of the "living portfolio" additions Vic plans.
+  -->
+  <div class="header-stickies">
+    <div class="sticky s-menu">
+      <span class="tack"></span>
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="#board">→ Photos</a></li>
+        <li><a href="#video-board">→ Short films</a></li>
+        <li><a href="#site-footer">→ Find more</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!--
+    FORK 4 — POLAROID: keep (v0.3) or cut (v0.2 read)?
+    Currently: CUT (placeholder default — to mirror the live-v0.2 simplicity Vic preferred).
+    Uncomment the block below to bring it back. Alternatives:
+      A) CUT (current) — page stays clean; first read is name → manifestos → photos.
+      B) KEEP, top-right under name — visually anchors who Vic is; works with stacked layout.
+      C) KEEP, but move into the Photo Grid as the first cell — a "self-portrait"
+         inside the contact sheet, less foregrounded than as a hero element.
+  -->
+  <!--
+  <div style="float: right; margin: -2em 0 2em 2em;">
+    <div class="polaroid">
+      <svg class="polaroid-leaf" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M 30 78 Q 12 60, 14 30 Q 22 8, 30 6 Q 38 8, 46 30 Q 48 60, 30 78 Z"
+              fill="#5a8b3a" stroke="#3d6b2a" stroke-width="0.8"/>
+        <line x1="30" y1="78" x2="30" y2="6" stroke="#3d6b2a" stroke-width="0.8"/>
+        <path d="M 30 28 Q 22 32, 16 38" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+        <path d="M 30 28 Q 38 32, 44 38" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+        <path d="M 30 48 Q 22 52, 16 58" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+        <path d="M 30 48 Q 38 52, 44 58" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+      </svg>
+      <img src="../images%202.0/lp_image.jpeg" alt="Portrait of Victor Bermudes" loading="eager">
+    </div>
+  </div>
+  -->
+
+  <!-- ===== INTRO — manifestos in the quiet register, plus one floated notebook fragment ===== -->
+  <section id="intro">
+    <div class="notebook nb-float nb-float-right">
+      <p class="nb-label">Mid-thought —</p>
+      <p>Nuance is novelty.</p>
+      <p>Nothing is binary.</p>
+      <p>&nbsp;</p>
+      <p><em>Look into the</em></p>
+      <p><em>dialectical nature</em></p>
+      <p><em>of things.</em></p>
+    </div>
+    <p class="manifesto">The Process is Iterative; we are scientific about artistic experimentation.</p>
+    <p class="manifesto">Leaning In: It&rsquo;s not that serious, but we take every part of it seriously.</p>
+    <p class="manifesto">We aim between the lines.</p>
+    <div style="clear: both;"></div>
+  </section>
+
+  <!-- ===== PHOTO GRID — LOCKED. 41 imgs from images 1.0/. ===== -->
+  <section id="board">
+    <div class="board-label">Some shots that have been pulling me</div>
+    <div class="photo-grid">
+      <img src="../images%201.0/IMG_4822.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6079.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6114.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6115.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6117_SnapseedCopy.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6124.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6137.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6138.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6157.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6421.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6552.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6556.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6808.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6846.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6857.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6861.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6978.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_6987.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7233.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7257.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7293.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7319.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7320.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7339.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7343.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7344.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7362.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7388.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7397.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7400.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7405.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7409.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7412.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7413.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7415.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7424.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7426.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7443.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7449.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7463.jpeg" alt="" loading="lazy">
+      <img src="../images%201.0/IMG_7498.jpeg" alt="" loading="lazy">
+    </div>
+  </section>
+
+  <!--
+    FORK 5 — VIDEO LAYOUT: flat 5-grid (live v0.2) vs. 4-grid + CRT featured (local v0.3).
+    AND — separately —
+    FORK 6 — CRT TV: keep, cut, or move?
+    Currently: FLAT 5-VIDEO GRID, no CRT. Healdsburg gets the 21:9 wrapper as in live v0.2.
+    Alternatives for video layout:
+      A) FLAT 5-GRID (current, live-v0.2 read) — clean, balanced, works on mobile.
+      B) 4-GRID + CRT FEATURED (local v0.3) — Healdsburg as CRT TV, other 4 below.
+      C) 4-GRID + CRT in Hero — same as B but CRT lives in the hero block, not video board.
+    Alternatives for CRT specifically:
+      A) CUT (current) — was the right call if Vic prefers the cleaner v0.2 read.
+      B) KEEP in #video-board housing Healdsburg — playful, cinematic, but adds chrome.
+      C) MOVE to hero — visual anchor up top, but pulls focus from the name's drop-face.
+  -->
+  <section id="video-board">
+    <div class="notebook nb-float nb-float-left" style="margin-bottom: 2em;">
+      <p class="nb-label">Mirror caution —</p>
+      <p>Easy to be lost</p>
+      <p>in one's own</p>
+      <p>reflection.</p>
+      <p>&nbsp;</p>
+      <p><em>The mirror is</em></p>
+      <p><em>a check, not</em></p>
+      <p><em>a charm.</em></p>
+    </div>
+    <div class="video-board-label">Some short films of mine</div>
+    <div style="clear: both;"></div>
+    <div class="video-grid">
+
+      <figure class="video-item">
+        <div class="video-frame aspect-21-9">
+          <iframe title="Healdsburg, CA"
+            src="https://player.vimeo.com/video/249226131?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <figcaption class="video-caption">Healdsburg, CA</figcaption>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title="vimeo-player"
+            src="https://player.vimeo.com/video/585070097?h=40fc0dffbe"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title='"How Long Have We Been Friends?" — Experimental Documentary'
+            src="https://player.vimeo.com/video/388633748?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <figcaption class="video-caption">How Long Have We Been Friends?</figcaption>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title="YouTube video player"
+            src="https://www.youtube.com/embed/VA8KqojWsKE?si=OQ0YwDczOZtPxIBv"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </figure>
+
+      <figure class="video-item">
+        <div class="video-frame">
+          <iframe title="YouTube video player"
+            src="https://www.youtube.com/embed/AR6WNF-Y4R4?si=TzZ5buHMUV5q7SFt"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!--
+    OPEN THREAD — BULLETIN BOARD.
+    Not built in this draft. Per Vic's note: small, dense, anchored on reference photos.
+    To be designed in its own session. Parts live in bulletin-board.html (treat as parts library only).
+  -->
+
+  <!-- ===== FOOTER — LOCKED ===== -->
+  <footer id="site-footer">
+    <p class="manifesto-echo">We aim between the lines.</p>
+
+    <div class="footer-cluster">
+      <div class="footer-block">
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:vicbermudes@gmail.com">vicbermudes@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-block">
+        <h3>Find more</h3>
+        <ul>
+          <li><a href="https://vimeo.com/victordbermudes" target="_blank" rel="noopener">Vimeo</a></li>
+          <li><a href="https://www.youtube.com/@Watupwitthat1234567" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://substack.com/@vicdb" target="_blank" rel="noopener">Substack</a></li>
+          <li><a href="https://www.instagram.com/victor.d.b/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://github.com/vicbermudes" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/victor-demarco-bermudes/" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="signature">Made by Victor Bermudes · May 2026 · v0.4 (merge draft)</p>
+  </footer>
+
+</body>
+</html>
