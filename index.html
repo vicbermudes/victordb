@@ -2,21 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Victor Bermudes — Inspiration Board v0.2</title>
-  <style>
-    /* v0.2 — first treatment.
-       Vic's read: scale + orange + drop face + diagonal + looming but minimal.
-       Every value below is a DIAL, not a decision. We turn them together. */
+  <title>Victor Bermudes — Inspiration Board v0.5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <!--
+    MERGE DRAFT v0.5 — Vic's dial moves applied to v0.4.
+    Resolved: Fork 1 (stacked), Fork 2 (cut bio), Fork 3 (sticky to corner),
+              Fork 4 (keep polaroid, top-right under sticky, bigger, green-jacket headshot),
+              Fork 5 (flat 5-grid), Fork 6 (cut CRT), Fork 7 (Variant A only).
+    New: bigger Menu sticky with classic spool-shaped red pushpin (SVG, visible needle),
+         social-links row above manifestos (replacing bio).
+    Photos: ../images 1.0/ (the v0.2 set, 41 imgs); polaroid TODO swap to green-jacket pick.
+  -->
+
+  <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --jump:  #ff5722;   /* the orange — placeholder, dial with Vic   */
-      --drop:  #0a0a0a;   /* drop-face shadow color                    */
-      --bg:    #faf7f2;   /* page surface — warm off-white, dialed     */
-      --ink:   #1a1a1a;   /* primary text                              */
-      --quiet: #999;      /* secondary text, labels                    */
-      --tilt:  -3deg;     /* diagonal — dial up for more lean          */
+      --jump:  #ff5722;
+      --drop:  #0a0a0a;
+      --bg:    #faf7f2;
+      --ink:   #1a1a1a;
+      --quiet: #999;
+      --tilt:  -3deg;
+
+      /* sticky palette — Variant A. Yellow dialed punchier for the bigger menu. */
+      --sticky-yellow:    #ffd84a;   /* punchier than #fff3a0 — pops against off-white */
+      --sticky-yellow-2:  #ffc91f;
+      --sticky-pink:      #ffb3c1;
+      --sticky-mint:      #c8e6c9;
+      --paper-rule:       #b9d3e8;
+      --paper-margin:     #e8556e;
+      --paper-cream:      #f9f4dd;
     }
 
     body {
@@ -25,15 +44,11 @@
       color: var(--ink);
       min-height: 100vh;
       padding: clamp(2em, 5vw, 5em) clamp(1.2em, 6vw, 6em);
-      overflow-x: hidden;     /* the name's diagonal can otherwise spill */
+      overflow-x: hidden;
     }
 
-    /* ===== NAME — the JUMP ===== */
-    .name-block {
-      margin: 3em 0 7em;
-      max-width: 95%;
-    }
-
+    /* ===== NAME — LOCKED ===== */
+    .name-block { margin: 3em 0 4em; max-width: 95%; }
     .name {
       font-family: "Helvetica Neue", "Arial Black", Helvetica, sans-serif;
       font-weight: 900;
@@ -46,7 +61,6 @@
       font-style: italic;
       transform: rotate(var(--tilt));
       transform-origin: left bottom;
-      /* drop face — chromatic 3D extrusion */
       text-shadow:
          2px  2px 0 var(--drop),
          4px  4px 0 var(--drop),
@@ -54,134 +68,172 @@
          8px  8px 0 var(--drop),
         10px 10px 0 var(--drop);
     }
-
     .meta {
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
       font-size: 0.7em;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--quiet);
-      margin-top: 4em;
+      margin-top: 1.4em;
     }
 
-    /* ===== BOARD — quiet by design ===== */
-    #board {
-      margin-top: 6em;
-      border-top: 1px solid #d8d6d0;
-      padding-top: 3em;
-    }
-
-    .board-label {
+    /* ===== SOCIALS row — replaces the bio. Sits above the manifesto. ===== */
+    .socials {
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
-      font-size: 0.7em;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--quiet);
-      margin-bottom: 2em;
-    }
-
-    .placeholder-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1em;
-    }
-
-    .image-placeholder {
-      background: #ececea;
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #b5b3ac;
       font-size: 0.75em;
-      font-family: ui-monospace, monospace;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 2.4em 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 1.1em;
     }
-
-    /* ===== PHOTO GRID — contact-sheet mode ===== */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 0.5em;
+    .socials a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+      transition: color 0.15s, border-color 0.15s;
     }
+    .socials a:hover { color: var(--jump); border-bottom-color: var(--jump); }
+    .socials .sep { color: var(--quiet); user-select: none; }
 
-    .photo-grid img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      display: block;
-      background: #ececea;
-      cursor: pointer;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-
-    .photo-grid img:hover {
-      opacity: 0.92;
-      transform: scale(1.03);
-      z-index: 1;
+    /* ===== STICKIES — LOCKED Variant A register, Menu enlarged & repunched ===== */
+    .sticky {
       position: relative;
-    }
-
-    /* ===== VIDEO BOARD — same quiet register as image board ===== */
-    #video-board {
-      margin-top: 6em;
-      border-top: 1px solid #d8d6d0;
-      padding-top: 3em;
-    }
-
-    .video-board-label {
+      background: var(--sticky-yellow);
+      padding: 1.2em 1.3em 1.4em;
+      box-shadow:
+        0 1px 1px rgba(0,0,0,0.06),
+        0 6px 14px rgba(0,0,0,0.10);
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.78em;
+      line-height: 1.7;
+      color: #2a2614;
+      letter-spacing: 0.05em;
+    }
+    .sticky h4 {
       font-size: 0.7em;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--quiet);
-      margin-bottom: 2em;
+      color: #6b5c2e;
+      font-weight: 700;
+      margin-bottom: 0.6em;
+    }
+    .sticky a { color: #2a2614; text-decoration: none; border-bottom: 1px solid rgba(42,38,20,0.3); }
+    .sticky a:hover { color: var(--jump); border-bottom-color: var(--jump); }
+    .sticky ul { list-style: none; padding: 0; margin: 0; }
+    .sticky li { margin-bottom: 0.15em; }
+    .sticky.pink { background: var(--sticky-pink); color: #4a1d2a; }
+    .sticky.mint { background: var(--sticky-mint); color: #1f3a23; }
+
+    /* ===== Menu sticky — bigger, louder, drop-shadowed, punched yellow ===== */
+    .sticky.s-menu {
+      width: 16em;                          /* up from 12em */
+      padding: 1.7em 1.9em 1.9em;
+      font-size: 0.95em;                    /* up from 0.78em */
+      line-height: 1.6;
+      background: linear-gradient(180deg, var(--sticky-yellow) 0%, var(--sticky-yellow-2) 100%);
+      box-shadow:
+        0 1px 1px rgba(0,0,0,0.10),
+        0 4px 8px rgba(0,0,0,0.12),
+        0 14px 26px rgba(0,0,0,0.22),
+        0 28px 50px rgba(0,0,0,0.10);
+      transform: rotate(-4deg);
+    }
+    .sticky.s-menu h4 {
+      font-size: 0.75em;
+      color: #6b4d10;
+      margin-bottom: 0.9em;
+    }
+    .sticky.s-menu ul li { margin-bottom: 0.35em; }
+    .sticky.s-menu a {
+      border-bottom-color: rgba(42,38,20,0.45);
+      font-weight: 500;
     }
 
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-      gap: 1.8em 1.5em;
-    }
-
-    .video-item { margin: 0; }
-
-    /* Responsive iframe wrapper —
-       holds 16:9 aspect ratio while flexing to container width.
-       The iframe inside fills the wrapper. */
-    .video-frame {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #000;
-      overflow: hidden;
-    }
-
-    .video-frame.aspect-21-9 { aspect-ratio: 21 / 9; }
-
-    .video-frame iframe {
+    /* ===== Pushpin — classic dumbbell silhouette red thumbtack, SVG. =====
+       Sized roughly square because the SVG's content is rotated inside. */
+    .pushpin {
       position: absolute;
-      inset: 0;
+      top: -1.4em;
+      left: 14%;
+      width: 3em;
+      height: 3em;
+      z-index: 3;
+      filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.35));
+      pointer-events: none;
+    }
+
+    /* the old round .tack still exists for any other stickies that use it */
+    .tack {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      top: -6px; left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle at 30% 30%, #ff8a8a 0%, #c41e1e 50%, #7a1010 100%);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.4), inset -1px -1px 2px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+    .tack.silver { background: radial-gradient(circle at 30% 30%, #f0f0f0 0%, #999 60%, #555 100%); }
+
+    /* sticky cluster pinned to the corner (Fork 3 — pushed further toward edge) */
+    .header-stickies {
+      position: relative;
+      min-height: 1px;
+      margin-top: -2em;
+      margin-bottom: 4em;
+      pointer-events: none;
+    }
+    .header-stickies > * { pointer-events: auto; }
+    .header-stickies .s-menu {
+      position: absolute;
+      right: 0.5em;     /* was 2em — pushed toward corner */
+      top: -2em;        /* was -1em — lifted higher */
+    }
+
+    /* ===== POLAROID — kept (Fork 4), bigger, top-right under the menu sticky ===== */
+    .polaroid-wrap {
+      float: right;
+      margin: 1em 0 2em 2em;     /* sits on the right side; manifestos flow on the left */
+      position: relative;
+      z-index: 1;
+    }
+    .polaroid {
+      position: relative;
+      background: #fdfbf6;
+      padding: 1em 1em 3em;
+      box-shadow:
+        0 1px 1px rgba(0,0,0,0.08),
+        0 8px 22px rgba(0,0,0,0.18),
+        0 22px 40px rgba(0,0,0,0.10);
+      transform: rotate(2deg);
+      width: 26em;                  /* up from 22em */
+    }
+    .polaroid img {
+      display: block;
       width: 100%;
-      height: 100%;
-      border: 0;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      background: #ddd;
+    }
+    .polaroid-leaf {
+      position: absolute;
+      top: -1.4em; right: 0.4em;
+      width: 4.5em; height: 6em;
+      pointer-events: none;
+      z-index: 2;
+      transform: rotate(18deg);
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
     }
 
-    .video-caption {
-      font-family: ui-monospace, monospace;
-      font-size: 0.7em;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--quiet);
-      margin-top: 0.7em;
-    }
-
-    /* ===== INTRO — secondary read, deliberately quiet ===== */
+    /* ===== INTRO — manifestos in the quiet register, plus one floated notebook fragment ===== */
     #intro {
       max-width: 42em;
-      margin: 0 0 5em;
+      margin: 2em 0 6em;
     }
-
     .manifesto {
       font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
       font-size: clamp(1.1em, 1.8vw, 1.4em);
@@ -191,19 +243,177 @@
     }
     .manifesto:last-child { margin-bottom: 0; }
 
-    .manifesto.placeholder {
-      color: #b5b3ac;
-      font-style: italic;
+    /* ===== NOTEBOOK FRAGMENT — LOCKED ===== */
+    .notebook {
+      position: relative;
+      background-color: var(--paper-cream);
+      padding: 1.4em 1.1em 1.2em 2.2em;
+      font-family: "Caveat", "Bradley Hand", cursive;
+      font-size: 1.1em;
+      line-height: 1.45em;
+      color: #1d2742;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent calc(1.45em - 1px),
+          var(--paper-rule) calc(1.45em - 1px),
+          var(--paper-rule) 1.45em
+        ),
+        linear-gradient(to right, transparent 0, transparent 1.7em, var(--paper-margin) 1.7em, var(--paper-margin) calc(1.7em + 1.5px), transparent calc(1.7em + 1.5px));
+      box-shadow:
+        1px 1px 0 rgba(0,0,0,0.10),
+        2px 2px 0 rgba(0,0,0,0.07),
+        0 8px 14px rgba(0,0,0,0.15);
+      clip-path: polygon(
+        0 8%, 6% 0%, 12% 8%, 18% 2%, 24% 8%, 30% 0%, 36% 6%, 42% 0%, 48% 8%, 54% 2%, 60% 8%, 66% 0%, 72% 6%, 78% 0%, 84% 8%, 90% 2%, 96% 8%, 100% 0%,
+        100% 100%, 0 100%
+      );
+    }
+    .notebook .nb-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.55em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.45);
+      margin-bottom: 0.4em;
+      line-height: 1;
+    }
+    .notebook p { margin: 0; }
+    .notebook em { font-style: italic; }
+
+    .nb-float { width: 14em; }
+    .nb-float-right { float: right; margin: 0 0 1.5em 2em; transform: rotate(2deg); }
+    .nb-float-left  { float: left;  margin: 0 2em 1.5em 0; transform: rotate(-2deg); }
+
+    /* ===== PHOTO GRID — LOCKED ===== */
+    #board {
+      margin-top: 6em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 3em;
+    }
+    .board-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-bottom: 2em;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.5em;
+    }
+    .photo-grid img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      background: #ececea;
+      cursor: zoom-in;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .photo-grid img:hover {
+      opacity: 0.92;
+      transform: scale(1.03);
+      z-index: 1;
+      position: relative;
     }
 
-    /* ===== FOOTER — closing gesture, layered descent in weight ===== */
+    /* ===== LIGHTBOX ===== */
+    #lightbox {
+      position: fixed; inset: 0;
+      background: rgba(10,10,10,0.94);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+      cursor: zoom-out;
+      padding: 2vw;
+    }
+    #lightbox[hidden] { display: none; }
+    #lightbox img {
+      max-width: 96vw;
+      max-height: 96vh;
+      object-fit: contain;
+      box-shadow: 0 12px 50px rgba(0,0,0,0.6);
+    }
+    .lightbox-btn {
+      position: absolute;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.9);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .lightbox-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.7); }
+    #lightbox-close {
+      top: 1.2em; right: 1.2em;
+      width: 2.4em; height: 2.4em;
+      border-radius: 50%;
+      font-size: 1.1em;
+    }
+    .lightbox-nav {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3em; height: 3em;
+      border-radius: 50%;
+      font-size: 1.6em;
+    }
+    #lightbox-prev { left: 1.2em; }
+    #lightbox-next { right: 1.2em; }
+    @media (max-width: 720px) {
+      .lightbox-nav { width: 2.4em; height: 2.4em; font-size: 1.3em; }
+      #lightbox-close { top: 0.8em; right: 0.8em; }
+    }
+
+    /* ===== VIDEO BOARD — flat 5-grid (Fork 5) ===== */
+    #video-board {
+      margin-top: 6em;
+      border-top: 1px solid #d8d6d0;
+      padding-top: 3em;
+    }
+    .video-board-label {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-bottom: 2em;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 1.8em 1.5em;
+    }
+    .video-item { margin: 0; }
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+    .video-frame.aspect-21-9 { aspect-ratio: 21 / 9; }
+    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-caption {
+      font-family: ui-monospace, monospace;
+      font-size: 0.7em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--quiet);
+      margin-top: 0.7em;
+    }
+
+    /* ===== FOOTER — LOCKED ===== */
     footer {
       margin-top: 8em;
       border-top: 1px solid #d8d6d0;
       padding-top: 4em;
       padding-bottom: 2em;
     }
-
     .manifesto-echo {
       font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
       font-size: clamp(1.15em, 2vw, 1.5em);
@@ -213,14 +423,12 @@
       margin: 0 0 4em;
       max-width: 38em;
     }
-
     .footer-cluster {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
       gap: 2em 4em;
       margin-bottom: 4em;
     }
-
     .footer-block h3 {
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
       font-size: 0.7em;
@@ -230,31 +438,17 @@
       margin: 0 0 0.9em;
       font-weight: 600;
     }
-
-    .footer-block ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-block li {
-      margin-bottom: 0.45em;
-    }
-
+    .footer-block ul { list-style: none; padding: 0; margin: 0; }
+    .footer-block li { margin-bottom: 0.45em; }
     .footer-block a {
-      font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      font-family: Georgia, serif;
       font-size: 1em;
       color: var(--ink);
       text-decoration: none;
       border-bottom: 1px solid #ccc;
       transition: color 0.15s, border-color 0.15s;
     }
-
-    .footer-block a:hover {
-      color: var(--jump);
-      border-bottom-color: var(--jump);
-    }
-
+    .footer-block a:hover { color: var(--jump); border-bottom-color: var(--jump); }
     .signature {
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
       font-size: 0.7em;
@@ -265,95 +459,215 @@
       margin-top: 2em;
     }
 
-    /* ===== MOBILE — narrow-screen tweaks ===== */
     @media (max-width: 720px) {
       .name-block { margin-top: 1em; margin-bottom: 4em; }
-
-      .photo-grid {
-        grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-        gap: 0.35em;
-      }
-
-      .video-grid {
-        grid-template-columns: 1fr;
-        gap: 1.2em;
-      }
-
-      .footer-cluster {
-        grid-template-columns: 1fr;
-        gap: 1.8em;
-      }
-
-      #board, #video-board, footer {
-        margin-top: 4em;
-      }
-
+      .header-stickies { margin-top: 1em; margin-bottom: 2.5em; min-height: 0; display: flex; flex-wrap: wrap; gap: 1em; }
+      .header-stickies .s-menu { position: static; width: auto; max-width: 16em; }
+      .nb-float-right, .nb-float-left { float: none; margin: 0 auto 2em; display: block; width: min(20em, 90%); }
+      .photo-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 0.35em; }
+      .video-grid { grid-template-columns: 1fr; gap: 1.2em; }
+      .footer-cluster { grid-template-columns: 1fr; gap: 1.8em; }
+      #board, #video-board, footer { margin-top: 4em; }
       footer { padding-top: 3em; }
+      .polaroid-wrap { float: none; margin: 0 auto 2em; }
+      .polaroid { width: min(100%, 18em); }
+      .socials { font-size: 0.7em; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ===== NAME + meta ===== -->
   <header class="name-block">
     <h1 class="name">Victor<br>Bermudes</h1>
-    <div class="meta">Inspiration Board · v0.2 · April 2026</div>
+    <div class="meta">Inspiration Board · v0.5 · May 2026</div>
+
+    <!-- SOCIALS row replaces the bio (Vic's call). -->
+    <nav class="socials" aria-label="Social links">
+      <a href="https://vimeo.com/victordbermudes" target="_blank" rel="noopener">Vimeo</a>
+      <span class="sep">·</span>
+      <a href="https://www.youtube.com/@Watupwitthat1234567" target="_blank" rel="noopener">YouTube</a>
+      <span class="sep">·</span>
+      <a href="https://substack.com/@vicdb" target="_blank" rel="noopener">Substack</a>
+      <span class="sep">·</span>
+      <a href="https://www.instagram.com/victor.d.b/" target="_blank" rel="noopener">Instagram</a>
+      <span class="sep">·</span>
+      <a href="https://github.com/vicbermudes" target="_blank" rel="noopener">GitHub</a>
+      <span class="sep">·</span>
+      <a href="https://www.linkedin.com/in/victor-demarco-bermudes/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
   </header>
+
+  <!-- ===== Menu sticky — bigger, louder, classic spool pushpin, pinned to corner ===== -->
+  <div class="header-stickies">
+    <div class="sticky s-menu">
+      <!-- Classic red thumbtack — dumbbell silhouette, tilted, tiny pin stub -->
+      <svg class="pushpin" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(30 30) rotate(-22)">
+          <!-- bottom flange (where pin enters) -->
+          <ellipse cx="0" cy="3" rx="13" ry="5" fill="#c01818"/>
+          <!-- top-edge highlight on bottom flange -->
+          <ellipse cx="0" cy="0" rx="13" ry="1.5" fill="#e63333" opacity="0.55"/>
+          <!-- waist / narrow connecting body -->
+          <rect x="-5" y="-12" width="10" height="14" fill="#a81414"/>
+          <!-- top dome (the head you push) -->
+          <ellipse cx="0" cy="-14" rx="13" ry="6" fill="#d92424"/>
+          <!-- top dome highlight -->
+          <ellipse cx="-5" cy="-16" rx="5" ry="1.6" fill="rgba(255,200,200,0.65)"/>
+          <!-- bottom-edge shadow on top dome -->
+          <ellipse cx="0" cy="-11" rx="13" ry="1.5" fill="#6a0808" opacity="0.45"/>
+          <!-- pin stub: small silver needle peeking out of the bottom flange -->
+          <line x1="0" y1="7" x2="0" y2="15" stroke="#9a9a9a" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="0" y1="7" x2="0" y2="15" stroke="#3a3a3a" stroke-width="0.5"/>
+        </g>
+      </svg>
+
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="#board">→ Photos</a></li>
+        <li><a href="#video-board">→ Short films</a></li>
+        <li><a href="#site-footer">→ Find more</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== POLAROID — kept, top-right under the sticky, bigger. (Fork 4)
+       Headshot: IMG_4822.jpeg (the green-jacket photo, pulled from the contact-sheet lineup). ===== -->
+  <div class="polaroid-wrap">
+    <div class="polaroid">
+      <svg class="polaroid-leaf" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M 30 78 Q 12 60, 14 30 Q 22 8, 30 6 Q 38 8, 46 30 Q 48 60, 30 78 Z"
+              fill="#5a8b3a" stroke="#3d6b2a" stroke-width="0.8"/>
+        <line x1="30" y1="78" x2="30" y2="6" stroke="#3d6b2a" stroke-width="0.8"/>
+        <path d="M 30 28 Q 22 32, 16 38" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+        <path d="M 30 28 Q 38 32, 44 38" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+        <path d="M 30 48 Q 22 52, 16 58" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+        <path d="M 30 48 Q 38 52, 44 58" stroke="#3d6b2a" stroke-width="0.5" fill="none"/>
+      </svg>
+      <img src="IMG_4822.jpeg" alt="Portrait of Victor Bermudes" loading="eager">
+    </div>
+  </div>
+
+  <!-- ===== INTRO — manifestos in the quiet register, one floated notebook fragment ===== -->
   <section id="intro">
+    <div class="notebook nb-float nb-float-right">
+      <p class="nb-label">Mid-thought —</p>
+      <p>Nuance is novelty.</p>
+      <p>Nothing is binary.</p>
+      <p>&nbsp;</p>
+      <p><em>Look into the</em></p>
+      <p><em>dialectical nature</em></p>
+      <p><em>of things.</em></p>
+    </div>
     <p class="manifesto">The Process is Iterative; we are scientific about artistic experimentation.</p>
     <p class="manifesto">Leaning In: It&rsquo;s not that serious, but we take every part of it seriously.</p>
     <p class="manifesto">We aim between the lines.</p>
+    <div style="clear: both;"></div>
   </section>
 
+  <!-- ===== PHOTO GRID — 55 imgs from IN/ folder, sequenced for montage rhythm.
+       Opens with the torii (design DNA) → architectural rhymes → travel/journey →
+       nature/textural → botanical/floral → macro/material → food → domestic interiors →
+       figures in landscape → americana/atmospheric → closing breath (lake silhouette).
+       (IMG_4822 = polaroid headshot, not in lineup. Plate variants culled to 2.) ===== -->
   <section id="board">
     <div class="board-label">Some shots that have been pulling me</div>
     <div class="photo-grid">
-      <img src="IMG_4822.jpeg" alt="" loading="lazy">
-      <img src="IMG_6079.jpeg" alt="" loading="lazy">
-      <img src="IMG_6114.jpeg" alt="" loading="lazy">
-      <img src="IMG_6115.jpeg" alt="" loading="lazy">
-      <img src="IMG_6117_SnapseedCopy.jpeg" alt="" loading="lazy">
-      <img src="IMG_6124.jpeg" alt="" loading="lazy">
-      <img src="IMG_6137.jpeg" alt="" loading="lazy">
-      <img src="IMG_6138.jpeg" alt="" loading="lazy">
-      <img src="IMG_6157.jpeg" alt="" loading="lazy">
-      <img src="IMG_6421.jpeg" alt="" loading="lazy">
-      <img src="IMG_6552.jpeg" alt="" loading="lazy">
-      <img src="IMG_6556.jpeg" alt="" loading="lazy">
-      <img src="IMG_6808.jpeg" alt="" loading="lazy">
-      <img src="IMG_6846.jpeg" alt="" loading="lazy">
-      <img src="IMG_6857.jpeg" alt="" loading="lazy">
-      <img src="IMG_6861.jpeg" alt="" loading="lazy">
-      <img src="IMG_6978.jpeg" alt="" loading="lazy">
-      <img src="IMG_6987.jpeg" alt="" loading="lazy">
-      <img src="IMG_7233.jpeg" alt="" loading="lazy">
+      <!-- Open: design DNA — torii -->
+      <img src="IMG_0849.jpeg" alt="Itsukushima torii with sun flare" loading="eager">
+      <img src="IMG_0850.jpeg" alt="Torii column close-up" loading="eager">
+      <img src="IMG_0845.jpeg" alt="Torii with photographer at base" loading="lazy">
+      <!-- Architectural rhymes -->
+      <img src="IMG_2349.jpeg" alt="Sacramento Tower Bridge underbelly" loading="lazy">
+      <img src="IMG_7424.jpeg" alt="Palace of Fine Arts arch" loading="lazy">
+      <img src="IMG_0818.jpeg" alt="Tunnel mouth, Japan" loading="lazy">
+      <img src="IMG_6769.jpeg" alt="Sun through pergola slats" loading="lazy">
+      <!-- Travel / Japan -->
+      <img src="IMG_0689.jpeg" alt="Kinkaku-ji in snow" loading="lazy">
+      <img src="IMG_0582.jpeg" alt="Hiroshima Peace Memorial" loading="lazy">
+      <img src="IMG_0549.jpeg" alt="Train window, snowy mountains" loading="lazy">
+      <img src="IMG_0553.jpeg" alt="Train window, abstract" loading="lazy">
+      <img src="IMG_0554.jpeg" alt="Snowy landscape, moving train" loading="lazy">
+      <img src="IMG_3157.jpeg" alt="Cedar trunks on moss" loading="lazy">
+      <img src="IMG_0802.jpeg" alt="Ferry deck, mountains across" loading="lazy">
+      <img src="IMG_0952.jpeg" alt="Ferry mirror reflecting torii" loading="lazy">
+      <img src="IMG_0847.jpeg" alt="Torii low-angle close-up" loading="lazy">
+      <!-- Nature / textural -->
+      <img src="IMG_1544.jpeg" alt="Live oak underside" loading="lazy">
+      <img src="IMG_5034.jpeg" alt="Mossy redwood trunk" loading="lazy">
+      <img src="IMG_4961.jpeg" alt="Hollow tree trunk" loading="lazy">
+      <!-- Botanical -->
+      <img src="IMG_7339.jpeg" alt="Mango tree flowering" loading="lazy">
+      <img src="IMG_7341.jpeg" alt="" loading="lazy">
+      <img src="IMG_7343.jpeg" alt="" loading="lazy">
+      <!-- Floral / still life -->
+      <img src="IMG_7233.jpeg" alt="Bird-of-paradise in green vase" loading="lazy">
       <img src="IMG_7257.jpeg" alt="" loading="lazy">
       <img src="IMG_7293.jpeg" alt="" loading="lazy">
       <img src="IMG_7319.jpeg" alt="" loading="lazy">
-      <img src="IMG_7320.jpeg" alt="" loading="lazy">
-      <img src="IMG_7339.jpeg" alt="" loading="lazy">
-      <img src="IMG_7343.jpeg" alt="" loading="lazy">
-      <img src="IMG_7344.jpeg" alt="" loading="lazy">
       <img src="IMG_7362.jpeg" alt="" loading="lazy">
-      <img src="IMG_7388.jpeg" alt="" loading="lazy">
-      <img src="IMG_7397.jpeg" alt="" loading="lazy">
-      <img src="IMG_7400.jpeg" alt="" loading="lazy">
+      <img src="IMG_6157.jpeg" alt="Rose in sake bottle" loading="lazy">
+      <img src="IMG_6080.jpeg" alt="Apple blossoms in brass vase" loading="lazy">
+      <img src="IMG_5694.jpeg" alt="Wildflower bouquet" loading="lazy">
+      <img src="IMG_5698.jpeg" alt="Wildflower bouquet, second framing" loading="lazy">
+      <!-- Macro / material -->
+      <img src="IMG_1706.jpeg" alt="Honey bee on yellow" loading="lazy">
+      <img src="IMG_3166.jpeg" alt="Ladybug cluster on bark" loading="lazy">
+      <img src="IMG_3167.jpeg" alt="Ladybug trail" loading="lazy">
+      <img src="IMG_2547.jpeg" alt="Red ceramic glaze" loading="lazy">
+      <!-- Food -->
+      <img src="IMG_5709.jpeg" alt="Short rib spread" loading="lazy">
+      <img src="IMG_6117_SnapseedCopy.jpeg" alt="Plate, overhead close" loading="lazy">
+      <img src="IMG_6124.jpeg" alt="Plate, side angle" loading="lazy">
+      <img src="IMG_3973.jpeg" alt="Panko and bok choy" loading="lazy">
+      <!-- Domestic interiors -->
+      <img src="IMG_6421.jpeg" alt="Plant shelf with red lantern" loading="lazy">
+      <img src="IMG_6058.jpeg" alt="Windowsill plants" loading="lazy">
+      <img src="IMG_6100.jpeg" alt="Cat yawning" loading="lazy">
+      <img src="IMG_6846.jpeg" alt="Cat portrait" loading="lazy">
+      <img src="IMG_6857.jpeg" alt="" loading="lazy">
+      <!-- Figures in landscape -->
+      <img src="IMG_4976.jpeg" alt="Figure on a fallen log" loading="lazy">
+      <img src="IMG_6987.jpeg" alt="Figure on boardwalk at dusk" loading="lazy">
+      <img src="IMG_6978.jpeg" alt="" loading="lazy">
+      <img src="IMG_7388.jpeg" alt="Portrait, flowering bush" loading="lazy">
       <img src="IMG_7405.jpeg" alt="" loading="lazy">
-      <img src="IMG_7409.jpeg" alt="" loading="lazy">
       <img src="IMG_7412.jpeg" alt="" loading="lazy">
-      <img src="IMG_7413.jpeg" alt="" loading="lazy">
-      <img src="IMG_7415.jpeg" alt="" loading="lazy">
-      <img src="IMG_7424.jpeg" alt="" loading="lazy">
-      <img src="IMG_7426.jpeg" alt="" loading="lazy">
-      <img src="IMG_7443.jpeg" alt="" loading="lazy">
-      <img src="IMG_7449.jpeg" alt="" loading="lazy">
-      <img src="IMG_7463.jpeg" alt="" loading="lazy">
-      <img src="IMG_7498.jpeg" alt="" loading="lazy">
+      <img src="IMG_2853.jpeg" alt="Autumn yard at golden hour" loading="lazy">
+      <!-- Americana / atmospheric -->
+      <img src="IMG_1924.jpeg" alt="Carnival ride, twilight" loading="lazy">
+      <img src="IMG_4074.jpeg" alt="Strip-mall liquor store, night" loading="lazy">
+      <img src="IMG_2947.jpeg" alt="Theater interior, gilded arch" loading="lazy">
+      <!-- Closing breath -->
+      <img src="IMG_4909.jpeg" alt="Hooded silhouette at lake sunset" loading="lazy">
     </div>
   </section>
 
+  <!-- ===== VIDEO BOARD — flat 5-grid, Healdsburg back as 21:9 (Fork 5 · A) ===== -->
   <section id="video-board">
+    <div class="notebook nb-float nb-float-left" style="margin-bottom: 2em;">
+      <p class="nb-label">Mirror caution —</p>
+      <p>Easy to be lost</p>
+      <p>in one's own</p>
+      <p>reflection.</p>
+      <p>&nbsp;</p>
+      <p><em>The mirror is</em></p>
+      <p><em>a check, not</em></p>
+      <p><em>a charm.</em></p>
+    </div>
     <div class="video-board-label">Some short films of mine</div>
+    <div style="clear: both;"></div>
     <div class="video-grid">
+
+      <figure class="video-item">
+        <div class="video-frame aspect-21-9">
+          <iframe title="Healdsburg, CA"
+            src="https://player.vimeo.com/video/249226131?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <figcaption class="video-caption">Healdsburg, CA</figcaption>
+      </figure>
 
       <figure class="video-item">
         <div class="video-frame">
@@ -375,19 +689,9 @@
       </figure>
 
       <figure class="video-item">
-        <div class="video-frame aspect-21-9">
-          <iframe title="Healdsburg, CA"
-            src="https://player.vimeo.com/video/249226131?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            allowfullscreen></iframe>
-        </div>
-        <figcaption class="video-caption">Healdsburg, CA</figcaption>
-      </figure>
-
-      <figure class="video-item">
         <div class="video-frame">
           <iframe title="YouTube video player"
-            src="https://www.youtube.com/embed/VA8KqojWsKE?si=OQ0YwDczOZtPxIBv"
+            src="https://www.youtube.com/embed/VA8KqojWsKE"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen></iframe>
         </div>
@@ -396,7 +700,7 @@
       <figure class="video-item">
         <div class="video-frame">
           <iframe title="YouTube video player"
-            src="https://www.youtube.com/embed/AR6WNF-Y4R4?si=TzZ5buHMUV5q7SFt"
+            src="https://www.youtube.com/embed/AR6WNF-Y4R4"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen></iframe>
         </div>
@@ -405,7 +709,10 @@
     </div>
   </section>
 
-  <footer>
+  <!-- OPEN THREAD — bulletin board still pending its own session. -->
+
+  <!-- ===== FOOTER — LOCKED ===== -->
+  <footer id="site-footer">
     <p class="manifesto-echo">We aim between the lines.</p>
 
     <div class="footer-cluster">
@@ -429,8 +736,57 @@
       </div>
     </div>
 
-    <p class="signature">Made by Victor Bermudes · April 2026 · v0.2</p>
+    <p class="signature">Made by Victor Bermudes · May 2026 · v0.5</p>
   </footer>
+
+  <!-- ===== LIGHTBOX overlay (hidden until a photo is clicked) ===== -->
+  <div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button id="lightbox-prev" class="lightbox-btn lightbox-nav" type="button" aria-label="Previous photo">&lsaquo;</button>
+    <img id="lightbox-img" src="" alt="">
+    <button id="lightbox-next" class="lightbox-btn lightbox-nav" type="button" aria-label="Next photo">&rsaquo;</button>
+    <button id="lightbox-close" class="lightbox-btn" type="button" aria-label="Close">&times;</button>
+  </div>
+
+  <script>
+    (function () {
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightbox-img');
+      const closeBtn = document.getElementById('lightbox-close');
+      const prevBtn = document.getElementById('lightbox-prev');
+      const nextBtn = document.getElementById('lightbox-next');
+      const photos = Array.from(document.querySelectorAll('.photo-grid img'));
+      let idx = -1;
+
+      function open(i) {
+        idx = i;
+        const img = photos[idx];
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || '';
+        lb.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lb.hidden = true;
+        lbImg.src = '';
+        idx = -1;
+        document.body.style.overflow = '';
+      }
+      function next() { if (idx >= 0) open((idx + 1) % photos.length); }
+      function prev() { if (idx >= 0) open((idx - 1 + photos.length) % photos.length); }
+
+      photos.forEach((img, i) => img.addEventListener('click', () => open(i)));
+      closeBtn.addEventListener('click', e => { e.stopPropagation(); close(); });
+      nextBtn.addEventListener('click', e => { e.stopPropagation(); next(); });
+      prevBtn.addEventListener('click', e => { e.stopPropagation(); prev(); });
+      lb.addEventListener('click', e => { if (e.target === lb || e.target === lbImg) close(); });
+      document.addEventListener('keydown', e => {
+        if (lb.hidden) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowRight') next();
+        else if (e.key === 'ArrowLeft') prev();
+      });
+    })();
+  </script>
 
 </body>
 </html>
